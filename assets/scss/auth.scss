@@ -1,0 +1,100 @@
+.g-3,
+.gy-3 {
+  --bs-gutter-y: 1rem;
+}
+
+.body-form {
+  padding-top: 40px !important;
+  padding-bottom: 40px !important;
+  align-items: center !important;
+  display: flex !important;
+  min-height: 100vh;
+  background-color: #e5edf2;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+
+  .form-floating {
+    position: relative;
+  }
+
+  .form-floating > .form-control,
+  .form-floating > .form-select {
+    height: calc(3.5rem + 2px);
+    line-height: 1.25;
+  }
+  .form-floating > .form-control {
+    padding: 1rem 0.75rem;
+  }
+  input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .form-floating > label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    pointer-events: none;
+    border: 1px solid transparent;
+    transform-origin: 0 0;
+    transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+  }
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  .form-floating > .form-control:focus,
+  .form-floating > .form-control:not(:placeholder-shown) {
+    padding-top: 1.625rem;
+    padding-bottom: 0.625rem;
+  }
+
+  .form-floating > .form-control:focus ~ label,
+  .form-floating > .form-control:not(:placeholder-shown) ~ label,
+  .form-floating > .form-select ~ label {
+    opacity: 0.65;
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+  }
+}
+
+.input-group.has-validation > .dropdown-toggle:nth-last-child(n + 4),
+.input-group.has-validation
+  > :nth-last-child(n + 3):not(.dropdown-toggle):not(.dropdown-menu) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.login {
+  ::placeholder {
+    opacity: 0 !important;
+  }
+}
+
+.register {
+  .form-signin {
+    max-width: 450px;
+  }
+}
+
+span.input-group-text {
+  border-top-right-radius: 0 !important;
+  border-right: none;
+  border-bottom-right-radius: 0 !important;
+}
+
+.form-control:focus {
+  border-color: #5287a8;
+  box-shadow: 0 0 8px 0 #5287a8;
+}
+
+.loading {
+  opacity: 0.2;
+}
