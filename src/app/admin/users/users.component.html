@@ -1,0 +1,123 @@
+<div [ngClass]="{'loading': loading}">
+  <div *ngIf="showMessage" #alert class="alert mx-4 shadow alert-success fixed-bottom alert-dismissible fade show" role="alert">
+    <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    Data berhasil diperbarui !
+  </div>
+  
+  <form #formData='ngForm' (ngSubmit)="tapSave()">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+      <div class="row m-0 align-items-center">
+        <h1 class="h2">List User</h1>
+        <ng-container *ngIf="idUser != null && isAdmin">
+          <div class="mx-4">
+            <button type="button" class="btn btn-sm btn-danger" (click)="deleteUser()"  [disabled]="loading" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+              Hapus
+            </button>  
+          </div>  
+        </ng-container>
+      </div>
+      <div *ngIf="isAdmin" class="btn-toolbar mb-2 mb-md-0">
+        <ng-container *ngIf="!isCollapsed">
+          <div class="row">
+            <div class="mx-2">
+              <button type="button" class="btn btn-sm btn-outline-danger" (click)="newUser()" (click)="collapse.toggle()"  [disabled]="loading" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                Batal
+              </button>  
+            </div>
+            <div class="mx-2">
+              <button type="submit" class="btn btn-sm btn-primary" [disabled]="!formData.valid" (click)="tapSave()" (click)="collapse.toggle()">
+                Simpan
+              </button>  
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+      <div class="container px-4">
+        <div class="row justify-content-md-center">
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-header text-center">
+                <h4>Tambah user baru manual</h4>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="text-center card-hover" (click)="fileUpload.click()">
+                      <img [src]="imgSrc" class="d-block mb-4 mx-auto img-fluid" alt="" width="150" loading="lazy" >
+                      <div class="form-group">
+                        <input #fileUpload type="file" accept="image/*" class="form-control-file" id="image" size="20" (change)="getImage($event)" required hidden [disabled]="loading">
+                        <small id="fileHelp" class="form-text text-muted">
+                            (click) gambar untuk merubah foto user.
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+    
+                    <div class="mb-3">
+                      <label for="username" class="form-label">Username</label>
+                      <input type="username" class="form-control"  name="username" id="username" placeholder="john" [(ngModel)]="user.username" required>
+                    </div>
+      
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="text" class="form-control" name="password"  id="password" placeholder="password" [(ngModel)]="user.password" required disabled>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">@</span>
+                            <input type="email" class="form-control" name="email"  id="email" placeholder="email" [(ngModel)]="user.email" required disabled>
+                        </div>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">+62</span>
+                            <input type="tel" class="form-control" name="phone" id="phone" aria-describedby="phoneHelp" placeholder="089455xxxx" [(ngModel)]="user.phone" required>
+                            <small id="phoneHelp" class="form-text text-muted">
+                                Masukkan Nomor telepon/whatsapp untuk mempermudah pelanggan mendapatkan informasi lebih tentang anda.
+                            </small>
+                        </div>    
+                    </div>
+    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+  <div class="table-responsive" [ngClass]="{'loading': !isCollapsed}">
+    <table class="table table-striped   table-hover my-5 table-sm">
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Name</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Email</th>
+          <th scope="col">Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listUser; let idx=index" (click)="isCollapsed && isAdmin ? tapDetail(data.payload.doc.data(), data.payload.doc.id) : null" (click)="isCollapsed && isAdmin ? collapse.toggle() : null">
+          <td>{{ idx + 1 }}</td>
+          <td>{{ data.payload.doc.data().username }}</td>
+          <td>{{ data.payload.doc.data().phone }}</td>
+          <td>{{ data.payload.doc.data().email }}</td>
+          <td>{{ data.payload.doc.data().role }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

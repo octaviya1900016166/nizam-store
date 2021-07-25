@@ -1,0 +1,131 @@
+<div [ngClass]="{'loading': loading}">
+  <div *ngIf="showMessage" #alert class="alert mx-4 shadow alert-success fixed-bottom alert-dismissible fade show" role="alert">
+    <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    Data berhasil diperbarui !
+  </div>
+  
+  <form #formData='ngForm' (ngSubmit)="tapTambah()">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+      <div class="row m-0 align-items-center">
+        <h1 class="h2">Products</h1>
+        <ng-container *ngIf="idProduct != null">
+          <div class="mx-4">
+            <button type="button" class="btn btn-sm btn-danger" (click)="deleteProduct()" (click)="collapse.toggle()" [disabled]="loading" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+              Hapus
+            </button>  
+          </div>  
+        </ng-container>
+      </div>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <ng-container *ngIf="isCollapsed">
+          <button type="button" class="btn btn-sm btn-outline-secondary" (click)="produkBaru()" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+            Tambah product
+          </button>
+        </ng-container>
+        <ng-container *ngIf="!isCollapsed">
+          <div class="row">
+            <div class="mx-2">
+              <button type="button" class="btn btn-sm btn-outline-danger" (click)="produkBaru()" (click)="collapse.toggle()"  [disabled]="loading" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                Batal
+              </button>  
+            </div>
+            <div class="mx-2">
+              <button type="submit" class="btn btn-sm btn-primary" [disabled]="!formData.valid" (click)="tapTambah()" (click)="collapse.toggle()">
+                Simpan
+              </button>  
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+      <div class="container px-4">
+        <div class="row justify-content-md-center">
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-header text-center">
+                <h4>Tambahkan produk baru</h4>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="text-center cursor-pointer" (click)="fileUpload.click()">
+                      <img [src]="imgSrc" class="d-block mb-4 mx-auto img-fluid" alt="" width="150" loading="lazy" >
+                      <div class="form-group">
+                        <input #fileUpload type="file" accept="image/*" class="form-control-file" id="image" size="20" (change)="getImage($event)" required hidden [disabled]="loading">
+                        <small id="fileHelp" class="form-text text-muted">
+                            (click) gambar untuk merubah foto produk.
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Nama Produk</label>
+                      <input type="text" class="form-control"  name="name" id="name" placeholder="Masukkan nama produk" [(ngModel)]="product.name" required>
+                    </div>
+
+                    <div class="row mb-3 align-items-center m-0">
+                      <label class="form-label m-0">Kategori : </label>
+                      <div class="input-group mr-2 ml-auto">
+                        <select class="form-select" name="category" [(ngModel)]="product.category" [disabled]="loading">
+                          <option *ngFor="let cat of category" [value]="cat">{{ cat }}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3 align-items-center m-0">
+                      <label class="form-label m-0">Harga : </label>
+                      <div class="input-group mb-3 price ml-auto mr-2">
+                        <span class="input-group-text">Rp</span>
+                        <input type="number" min="1" step="any" class="form-control" aria-label="Harga produk" name="price" placeholder="0." [(ngModel)]="product.price" [disabled]="loading">
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="desc" class="form-label">Deskripsi</label>
+                      <textarea class="form-control" placeholder="Berikan deskripsi produk" rows="5" [(ngModel)]="product.description" name="description" [disabled]="loading" style="height: auto;" required></textarea>
+                    </div>
+    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="isEmpty" class="text-center m-4" [ngClass]="{'loading': !isCollapsed}">
+    <h4>{{ message }}</h4>
+  </div>
+  
+  <div *ngIf="!isEmpty" class="table-responsive" [ngClass]="{'loading': !isCollapsed}">
+    <table class="table table-striped   table-hover my-5 table-sm">
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Category</th>
+          <th scope="col">Description</th>
+          <th *ngIf="isAdmin" scope="col">Author</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listData; let idx=index" (click)="isCollapsed ? getDetail(data.payload.doc.data(), data.payload.doc.id) : null" (click)="isCollapsed ? collapse.toggle() : null">
+          <td>{{ idx + 1 }}</td>
+          <td>{{ data.payload.doc.data().name }}</td>
+          <td>{{ data.payload.doc.data().price }}</td>
+          <td>{{ data.payload.doc.data().category }}</td>
+          <td>{{ data.payload.doc.data().description }}</td>
+          <td *ngIf="isAdmin">{{ data.payload.doc.data().author }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

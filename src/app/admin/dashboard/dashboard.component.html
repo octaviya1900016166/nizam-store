@@ -1,0 +1,71 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+  <h1 class="h2">Dashboard</h1>
+</div>
+
+<div class="container head-admin">
+  <div class="row flex-lg-row-reverse justify-content-md-center align-items-center g-5 p-5">
+    <div class="col-2">
+      <img [src]="user.poto_profile" class="d-block mx-auto img-fluid" width="200">
+    </div>
+    <div class="col-10">
+      <p class="lead mb-3">Selamat datang kembali,</p>
+      <h1 class="display-5 fw-bold lh-1">{{ user.username }}</h1>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        <button type="button" class="btn btn-primary btn-lg px-4 me-md-2" routerLink="/admin/product-list">Tambah produk baru</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-2">
+  <div fxLayout="row wrap" fxLayoutGap="grid">
+    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+      <div class="p-4">
+          <div class="card">
+              <div class="card-header text-right">
+                Total Produk
+              </div>
+              <div class="card-body text-center">
+                <p class="card-text h2">{{ totalProduct }}</p>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+      <div class="p-4">
+          <div class="card">
+              <div class="card-header text-right">
+                Total User
+              </div>
+              <div class="card-body text-center">
+                <p class="card-text h2">{{ totalUser }}</p>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isEmptyProduct" class="table-responsive">
+    <table class="table my-5">
+      <caption>List 5 produk terbaru</caption>
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Category</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listProduct; let idx=index">
+          <td>{{ idx + 1 }}</td>
+          <td>{{ data.payload.doc.data().name }}</td>
+          <td>{{ data.payload.doc.data().price }}</td>
+          <td>{{ data.payload.doc.data().category }}</td>
+          <td>{{ data.payload.doc.data().description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

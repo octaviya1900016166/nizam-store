@@ -1,0 +1,22 @@
+.head-admin {
+  background-color: #024f800d;
+  border-radius: 20px;
+}
+
+.card {
+  background-color: #f2f6f9 !important;
+  border: 1px solid rgb(2 79 128) !important;
+  border-radius: 20px !important;
+
+  .card-header {
+    font-weight: bold;
+    font-size: 2rem;
+    background-color: #f2f6f9 !important;
+    border-bottom: 1px solid rgb(2 79 128) !important;
+
+    &:first-child {
+      border-radius: 20px;
+      box-shadow: 0 4px 4px #024f8026;
+    }
+  }
+}
